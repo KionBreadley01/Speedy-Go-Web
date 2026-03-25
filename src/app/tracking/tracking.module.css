@@ -1,0 +1,485 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  min-height: calc(100vh - 80px);
+}
+
+/* Top Nav */
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.backBtn {
+  width: 40px;
+  height: 40px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.backBtn:hover {
+  background-color: var(--gray-50);
+}
+
+.navTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin: 0;
+}
+
+.helpBadge {
+  background-color: rgba(236, 109, 19, 0.1);
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.helpText {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ETA */
+.etaSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 4px;
+}
+
+.etaLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate-500);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.etaTime {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--slate-900);
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.onTimeBadge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #dcfce7;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-top: 4px;
+}
+
+.onTimeDot {
+  font-size: 10px;
+  color: #15803d;
+}
+
+.onTimeText {
+  font-size: 12px;
+  font-weight: 700;
+  color: #15803d;
+}
+
+/* Split Layout */
+.splitLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .splitLayout {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+/* Map */
+.mapWrap {
+  height: 300px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--gray-200);
+}
+
+@media (min-width: 768px) {
+  .mapWrap {
+    height: 100%;
+    min-height: 420px;
+  }
+}
+
+.pinWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.pingRing {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: rgba(236, 109, 19, 0.25);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.4; }
+}
+
+.riderPin {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--white);
+  box-shadow: 0 4px 12px rgba(236, 109, 19, 0.4);
+}
+
+/* Steps */
+.stepsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stepCard {
+  display: flex;
+  align-items: center;
+  background-color: var(--white);
+  border-radius: 16px;
+  padding: 16px;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid var(--gray-100);
+  transition: all 0.2s;
+}
+
+.stepCardActive {
+  border-color: rgba(236, 109, 19, 0.3);
+  box-shadow: 0 4px 12px rgba(236, 109, 19, 0.1);
+}
+
+.stepIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stepIconActive {
+  background-color: rgba(236, 109, 19, 0.1);
+}
+
+.stepLabel {
+  flex: 1;
+  font-size: 16px;
+  color: var(--slate-500);
+  font-weight: 600;
+}
+
+.stepLabelActive {
+  color: var(--slate-900);
+  font-weight: 800;
+}
+
+/* Cancel */
+.cancelBtn {
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: none;
+  border-radius: 16px;
+  font-size: 15px;
+  color: #EF4444;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background-color 0.2s;
+}
+
+.cancelBtn:hover {
+  background-color: rgba(239, 68, 68, 0.18);
+}
+
+.completedLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.completedLink:hover {
+  text-decoration: underline;
+}
+
+/* Order Items */
+.itemsCard {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid var(--gray-100);
+}
+
+.itemsCardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin: 0 0 14px 0;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.itemQtyBadge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: rgba(236, 109, 19, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.itemQtyText {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.itemDetails {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate-800);
+}
+
+.itemPrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--slate-900);
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--gray-100);
+  padding-top: 14px;
+  margin-top: 4px;
+}
+
+.totalLabel {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--slate-500);
+}
+
+.totalValue {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Loading / Empty */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 16px;
+  color: var(--slate-500);
+  font-size: 16px;
+}
+
+.backToHomeBtn {
+  padding: 12px 24px;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Cancel Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalSheet {
+  background-color: var(--white);
+  border-radius: 28px;
+  padding: 36px 32px 32px;
+  width: 90%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalIconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: rgba(239,68,68,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalTitle {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--slate-900);
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin: 0;
+}
+
+.modalDesc {
+  font-size: 15px;
+  color: var(--slate-500);
+  text-align: center;
+  line-height: 1.5;
+  font-weight: 500;
+  margin: 0;
+}
+
+.modalConfirmBtn {
+  width: 100%;
+  height: 56px;
+  background-color: #EF4444;
+  border: none;
+  border-radius: 999px;
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
+  transition: background-color 0.2s;
+}
+
+.modalConfirmBtn:hover {
+  background-color: #dc2626;
+}
+
+.modalConfirmBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.modalKeepBtn {
+  width: 100%;
+  height: 52px;
+  background-color: var(--gray-100);
+  border: none;
+  border-radius: 999px;
+  color: var(--slate-900);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modalKeepBtn:hover {
+  background-color: var(--gray-200);
+}
+
+/* Spin animation for loader */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+:global(.spin) {
+  animation: spin 1s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .etaTime {
+    font-size: 56px;
+  }
+}

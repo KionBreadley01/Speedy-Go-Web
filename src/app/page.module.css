@@ -1,0 +1,397 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.heroBanner {
+  background: linear-gradient(135deg, #fff7f2 0%, #ffe0cc 100%);
+  border-radius: 24px;
+  padding: 48px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(236, 109, 19, 0.08);
+}
+
+.heroContent {
+  max-width: 600px;
+}
+
+.heroTitle {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--slate-900);
+  line-height: 1.2;
+  margin: 0 0 12px 0;
+  letter-spacing: -1px;
+}
+
+.heroHighlight {
+  color: var(--primary);
+}
+
+.heroSubtitle {
+  font-size: 18px;
+  color: var(--slate-600);
+  margin: 0;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .heroBanner {
+    padding: 32px 24px;
+  }
+  .heroTitle {
+    font-size: 28px;
+  }
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.bottomPadding {
+  padding-bottom: 80px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.boltBadge {
+  background-color: var(--primary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(236, 109, 19, 0.4);
+}
+
+.sectionTitle {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--slate-900);
+  margin: 0;
+}
+
+.seeAll {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.seeAll:hover {
+  text-decoration: underline;
+}
+
+/* Horizontal Scrolls (Categories, Products) */
+.horizontalScroll {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.horizontalScroll::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Categories */
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  min-width: 80px;
+  transition: transform 0.2s;
+}
+
+.categoryItem:hover {
+  transform: translateY(-4px);
+}
+
+.categoryCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  background-color: #FFF7F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.categoryActive {
+  border-color: var(--primary);
+  background-color: #FFEFE6;
+}
+
+.categoryLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-700);
+}
+
+.categoryLabelActive {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Products Card */
+.productCard {
+  min-width: 160px;
+  width: 260px;
+  flex-shrink: 0;
+  background-color: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--gray-100);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.productImgWrapper {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background-color: var(--gray-50);
+}
+
+.productImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+}
+
+.productPlaceholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--gray-200);
+}
+
+.productInfo {
+  padding: 12px;
+}
+
+.productName {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin: 0 0 4px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productPrice {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Restaurants Grid */
+.restaurantsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.restaurantCard {
+  background-color: var(--white);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--gray-100);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.restaurantCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.restaurantImgWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: var(--gray-100);
+}
+
+.restaurantImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px 20px 0 0;
+}
+
+.restaurantPlaceholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--gray-300);
+}
+
+.likeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: rgba(0,0,0,0.3);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.likeBtn:hover {
+  background-color: rgba(0,0,0,0.5);
+}
+
+.timeBadge {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: var(--white);
+  padding: 6px 12px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.timeDot {
+  font-size: 10px;
+  color: var(--primary);
+}
+
+.timeText {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.restaurantInfo {
+  padding: 16px;
+}
+
+.restaurantInfoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.restaurantTextData {
+  flex: 1;
+}
+
+.restaurantName {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--slate-900);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+}
+
+.restaurantCategory {
+  font-size: 14px;
+  color: var(--gray-500);
+  margin: 0;
+}
+
+.ratingBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--success-bg);
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+
+.ratingText {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--success);
+}
+
+/* Floating Cart */
+.cartFloatingWrap {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 400px;
+  z-index: 100;
+}
+
+.cartFloatingBar {
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 20px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(236, 109, 19, 0.4);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.cartFloatingBar:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.02);
+}
+
+.cartCount {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.cartLabel, .cartTotal {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.loading, .noData {
+  padding: 40px;
+  text-align: center;
+  color: var(--gray-500);
+  font-size: 16px;
+}

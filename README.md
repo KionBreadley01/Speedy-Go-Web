@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Speedy-Go Web (Next.js)
 
-## Getting Started
+Plataforma Web para el servicio de Delivery **Speedy-Go**, migrada de la aplicación móvil a una interfaz web moderna, responsiva y optimizada para escritorio y dispositivos móviles.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Tecnologías Principales
+*   **Framework**: Next.js 15+ (App Router)
+*   **Base de datos / Autenticación**: Firebase (Firestore & Auth)
+*   **Estado Global**: Zustand (Persist para carrito y direcciones)
+*   **Mapas**: Leaflet / React-Leaflet (Local Marker Icons)
+*   **Estilos**: CSS Modules (Vanilla CSS con CSS Grid)
+*   **Iconos**: Lucide React
+
+---
+
+## 🛠️ Requisitos e Instalación
+
+1. **Clonar el repositorio** y entrar en la carpeta del proyecto web:
+   ```bash
+   cd Speedy-Go-Web
+   ```
+
+2. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
+
+3. **Ejecutar el servidor de desarrollo**:
+   ```bash
+   npm run dev
+   ```
+   *El proyecto se abrirá en [http://localhost:3000](http://localhost:3000)*
+
+---
+
+## 📂 Estructura del Proyecto
+
+```text
+src/
+├── app/                        # 🌐 Rutas y Páginas (Next.js App Router)
+│   ├── page.tsx               # Página de Inicio (Restaurantes, Categorías)
+│   ├── global.css              # Estilos globales de la aplicación
+│   ├── addresses/              # 📌 Gestión de Direcciones (Mapa + GPS)
+│   ├── cart/                   # 🛒 Carrito de Compras & Resumen de pedido
+│   ├── tracking/               # 📍 Tracking de Pedidos en tiempo real (Split Panel)
+│   ├── favorites/              # ❤️ Restaurantes Favoritos guardados
+│   ├── login/ / register/      # 🔐 Autenticación de Usuarios (Firebase)
+│   ├── edit-profile/           # 👤 Edición de Datos del Perfil
+│   ├── restaurant/[id]/         # 🍕 Detalle de Restaurante y Menú de Platos
+│   ├── product/[id]/           # 🍔 Detalle de un Producto (con extras)
+│   ├── search/                 # 🔍 Barra de búsqueda de comida/locales
+│   └── orders/                 # 📜 Historial de pedidos del usuario
+|
+├── components/                 # 🧱 Componentes Reutilizables
+│   ├── Navbar.tsx             # Barra superior con badges de carrito/pedidos
+│   ├── MapPicker.tsx          # Wrapper principal del mapa interactivo
+│   ├── MapInner.tsx           # Componente dinámico (no-SSR) de Leaflet
+│   ├── Toast.tsx              # Sistema de notificaciones personalizado (ToastProvider)
+│   └── ClientProviders.tsx    # Proveedores de contexto para el cliente (Zustand, Auth)
+|
+├── lib/                        # ⚙️ Lógica de Negocio y Conexiones
+│   ├── firebase.ts            # Inicialización de Firebase (Auth, Firestore)
+│   └── services/               # Clases de servicio para Firestore
+│       ├── userService.ts     # CRUD de usuarios, direcciones y favoritos
+│       ├── restaurantService.ts # Consultas de locales y platos
+│       └── orderService.ts     # Gestión y suscripción a pedidos
+|
+└── store/                       # 🧠 Gestión de Estado (Zustand)
+    ├── cartStore.ts            # Persistencia de items del carrito
+    └── addressStore.ts         # Estado de la dirección de entrega activa
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Características Destacadas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🗺️ Geolocalización Robusta (3-Tier Fallback)
+El sistema de ubicación en `/addresses` intenta detectar tu posición usando:
+1. **GPS del navegador** (alta precisión).
+2. **Redes Wi-Fi** (baja precisión).
+3. **Módulo de IP Geocoder** (`ipapi.co`) como último recurso, asegurando que siempre funcione aunque el usuario bloquee los permisos del navegador.
 
-## Learn More
+### 🍱 Interfaz de Usuario Premium
+*   **Diseño No-Scroll**: Todos los formularios (Auth, Direcciones, Perfil) usan CSS Grid columnas dobles en escritorio para encajar perfectamente en el viewport.
+*   **Floating Cart**: Barra inferior dinámica para móviles que muestra total y acceso rápido.
+*   **Notificaciones de Navbar**: Badges animados en tiempo real sobre los iconos de Carrito y Pedidos.
+*   **Custom Toasts**: Reemplaza los `alert()` nativos por globos de notificación elegantes de Éxito, Error, Info y Alerta.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🚢 Despliegue (Build)
+Para compilar a producción:
+```bash
+npm run build
+npm start
+```
+*Listo para desplegarse en **Vercel** o servidores Node.js compatibles.*

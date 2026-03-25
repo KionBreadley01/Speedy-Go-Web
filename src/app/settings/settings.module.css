@@ -1,0 +1,85 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+  background-color: var(--bg-light);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background-color: var(--white);
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
+  color: var(--slate-900);
+}
+
+.content {
+  padding: 16px 0;
+}
+
+.block {
+  background-color: var(--white);
+  margin-bottom: 24px;
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.listItem:hover {
+  background-color: var(--gray-50);
+}
+
+.itemTitle {
+  font-size: 16px;
+  color: var(--slate-900);
+  font-weight: 500;
+}
+
+.itemTitleSignOut {
+  font-size: 16px;
+  color: var(--red-500);
+  font-weight: 600;
+}
+
+.itemRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.itemValue {
+  font-size: 14px;
+  color: var(--gray-500);
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--gray-100);
+  margin-left: 24px;
+}

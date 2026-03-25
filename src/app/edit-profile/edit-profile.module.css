@@ -1,0 +1,154 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+  padding: 24px;
+  background-color: var(--white);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--slate-900);
+  margin: 0;
+}
+
+.formContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  padding-bottom: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slate-600);
+  margin-left: 4px;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 14px;
+  font-size: 15px;
+  color: var(--slate-900);
+  background-color: var(--white);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.disabledInput {
+  background-color: var(--gray-100);
+  color: var(--gray-500);
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-left: 4px;
+}
+
+.genderRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.genderChip {
+  padding: 10px 16px;
+  border-radius: 99px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--slate-700);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.genderActive {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+
+.saveBtn {
+  grid-column: 1 / -1;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 16px;
+  border-radius: 99px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(236, 109, 19, 0.3);
+  transition: background-color 0.2s;
+}
+
+.saveBtn:hover {
+  background-color: var(--primary-dark);
+}
+
+.saveBtn:disabled {
+  opacity: 0.7;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--gray-500);
+}
+
+.alertSuccess, .alertError {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.alertSuccess {
+  background-color: var(--success-bg);
+  color: var(--success);
+  border: 1px solid #bbf7d0;
+}
+
+.alertError {
+  background-color: #fef2f2;
+  color: var(--red-500);
+  border: 1px solid #fecaca;
+}

@@ -1,0 +1,201 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100vh - 80px);
+  background-color: var(--bg-light);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin: 0;
+}
+
+.cartIconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.content {
+  padding: 24px;
+}
+
+.activeBanner {
+  background-color: var(--primary);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 12px rgba(236, 109, 19, 0.25);
+  margin-bottom: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.activeBanner:hover {
+  transform: translateY(-2px);
+}
+
+.activeLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.iconCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activeStatus {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.activeRestaurant {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--white);
+  margin: 0;
+}
+
+.chevron {
+  color: var(--white);
+  font-weight: bold;
+}
+
+.historyLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.pastOrderCard {
+  background-color: var(--white);
+  border-radius: 20px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--gray-100);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.pastOrderRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.pastOrderLogoPlaceholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: var(--gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pastOrderInfo {
+  flex: 1;
+}
+
+.pastOrderName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin: 0 0 4px 0;
+}
+
+.pastOrderMeta {
+  display: block;
+  font-size: 12px;
+  color: var(--slate-500);
+  margin-bottom: 4px;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.deliveredText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.cancelledText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--red-500);
+}
+
+.pendingText {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.pastOrderTotal {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+
+.reorderBtn {
+  width: 100%;
+  border: 1.5px solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reorderBtn:hover {
+  background-color: var(--gray-50);
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px;
+  color: var(--gray-500);
+  font-size: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--gray-500);
+  font-size: 16px;
+}
