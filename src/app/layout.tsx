@@ -15,8 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Speedy-Go Web",
-  description: "Tu comida favorita a domicilio.",
+  title: "Speedy Go Web",
+  description: "Comida a tu alcance.",
+  icons: {
+    icon: "/assets/images/favicon.png",
+  },
 };
 
 export default function RootLayout({

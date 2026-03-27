@@ -6,6 +6,7 @@ import { auth } from '@/lib/firebase';
 import { userService, UserProfile } from '@/lib/services/userService';
 import { ArrowLeft, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import styles from './edit-profile.module.css';
+import BackButton from '@/components/BackButton';
 
 export default function EditProfile() {
   const router = useRouter();
@@ -74,11 +75,8 @@ export default function EditProfile() {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <button className={styles.backBtn} onClick={() => router.back()}>
-          <ArrowLeft size={24} color="var(--slate-900)" />
-        </button>
+        <BackButton />
         <h1 className={styles.title}>Editar Perfil</h1>
-        <div style={{ width: 44 }}></div>
       </header>
 
       {alert && (

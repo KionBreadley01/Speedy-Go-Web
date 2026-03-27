@@ -63,7 +63,7 @@ export default function Register() {
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>Crear Cuenta</h1>
-          <p className={styles.subtitle}>Únete a Speedy-Go y pide tu comida favorita.</p>
+          <p className={styles.subtitle}>Únete a Speedy Go y pide tu comida favorita.</p>
         </div>
 
         {error && <div className={styles.errorAlert}>{error}</div>}

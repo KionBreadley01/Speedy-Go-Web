@@ -25,7 +25,7 @@ interface AddressState {
   removeAddressFromStore: (addressId: string) => void;
   setLoading: (loading: boolean) => void;
   
-  // Helper to fetch the description string safe
+  // Ayudante para obtener la cadena de descripción de forma segura
   getCurrentAddressName: () => string;
 }
 

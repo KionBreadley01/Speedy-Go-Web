@@ -9,6 +9,8 @@ import { MapPin, Plus, Home, Briefcase, Building, CheckCircle2, Crosshair, Searc
 import styles from './addresses.module.css';
 import { MapPicker } from '@/components/MapPicker';
 import { useToast } from '@/components/Toast';
+import { useSearchParams } from 'next/navigation';
+import BackButton from '@/components/BackButton';
 
 export default function Addresses() {
   const router = useRouter();
@@ -18,7 +20,7 @@ export default function Addresses() {
   const [geoError, setGeoError] = useState('');
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   
-  // New address form state
+  // Estado del formulario de nueva dirección
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('Casa');
@@ -29,7 +31,7 @@ export default function Addresses() {
   const [editId, setEditId] = useState<string | null>(null);
   const { showToast } = useToast();
 
-  // Autocomplete state
+  // Estado de autocompletado
   interface Suggestion { display_name: string; lat: string; lon: string; type: string; }
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -37,7 +39,7 @@ export default function Addresses() {
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
-  // Debounced search for address predictions
+  // Búsqueda con rebote para predicciones de dirección
   const searchAddress = useCallback((query: string) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     if (query.length < 3) {
@@ -70,7 +72,7 @@ export default function Addresses() {
     setShowSuggestions(false);
   };
 
-  // Close suggestions on outside click
+  // Cerrar sugerencias al hacer clic fuera
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (suggestionsRef.current && !suggestionsRef.current.contains(e.target as Node)) {
@@ -157,7 +159,7 @@ export default function Addresses() {
     setIsGettingLocation(true);
     showToast('Buscando tu ubicación GPS...', 'info');
 
-    // Try high accuracy first, then fall back to low accuracy
+    // Intentar primero con alta precisión, luego caer a baja precisión
     const tryGeolocation = (highAccuracy: boolean) => {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -184,14 +186,14 @@ export default function Addresses() {
           }
         }, 
         (error) => {
-          // If high accuracy failed, retry with low accuracy (network-based)
+          // Si la alta precisión falló, reintentar con baja precisión (basada en red)
           if (highAccuracy) {
             console.warn('High accuracy failed, trying low accuracy...', error.message);
             tryGeolocation(false);
             return;
           }
           
-          // Both attempts failed
+          // Ambos intentos fallaron
           if (error.code === 1) {
             setGeoError('No tenemos acceso a tu ubicación. Haz clic en el candado de la barra de tu navegador → Permisos → Ubicación → Permitir, y luego recarga la página.');
             showToast('Permiso de ubicación denegado. Revisa los permisos del navegador.', 'error');
@@ -231,7 +233,10 @@ export default function Addresses() {
     <div className={styles.container}>
       {!isAdding && (
         <div className={styles.header}>
-          <h1 className={styles.title}>Mis Direcciones</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <BackButton />
+            <h1 className={styles.title}>Mis Direcciones</h1>
+          </div>
           <button className={styles.addBtn} onClick={() => setIsAdding(true)}>
             <Plus size={20} />
             <span>Agregar</span>
@@ -246,7 +251,7 @@ export default function Addresses() {
           </div>
 
           <div className={styles.formSplit}>
-            {/* Left: GPS + Map */}
+            {/* Izquierda: GPS + Mapa */}
             <div className={styles.formLeft}>
               <button className={styles.gpsBigBtn} onClick={handleGetLocation} type="button" disabled={isGettingLocation}>
                 <div className={styles.gpsIconCircle}>
@@ -279,7 +284,7 @@ export default function Addresses() {
               {geoError && <div className={styles.geoErrorMsg}>{geoError}</div>}
             </div>
 
-            {/* Right: Form fields in 2-col grid */}
+            {/* Derecha: Campos del formulario en una cuadrícula de 2 columnas */}
             <div className={styles.formRight}>
               <div className={styles.inputGroup} style={{ position: 'relative' }} ref={suggestionsRef}>
                 <label>Localidad / Lugar</label>
@@ -406,7 +411,7 @@ export default function Addresses() {
                           onClick={(e) => {
                             e.stopPropagation();
                             setOpenMenuId(null);
-                            // Pre-fill form for editing
+                            // Pre-llenar el formulario para editar
                             setEditId(addr.id || null);
                             setTitle(addr.title);
                             setDescription(addr.description);

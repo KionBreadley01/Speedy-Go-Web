@@ -6,6 +6,7 @@ import { auth } from '@/lib/firebase';
 import { orderService, Order } from '@/lib/services/orderService';
 import { Check, X, Clock, ShoppingBag, Truck, ShoppingCart } from 'lucide-react';
 import styles from './orders.module.css';
+import BackButton from '@/components/BackButton';
 
 export default function Orders() {
   const router = useRouter();
@@ -71,7 +72,10 @@ export default function Orders() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>Mis Pedidos</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <BackButton />
+          <h1 className={styles.title}>Mis Pedidos</h1>
+        </div>
         <button className={styles.cartIconBtn} onClick={() => router.push('/cart')}>
           <ShoppingCart size={24} color="var(--slate-900)" />
         </button>

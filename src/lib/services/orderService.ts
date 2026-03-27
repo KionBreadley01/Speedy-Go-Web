@@ -19,7 +19,7 @@ export interface Order {
 const ORDERS_COLLECTION = 'orders';
 
 export const orderService = {
-  // Create a new order
+  // Crear un nuevo pedido
   async placeOrder(
     userId: string, 
     restaurantId: string, 
@@ -47,7 +47,7 @@ export const orderService = {
     }
   },
 
-  // Get all orders for a specific user
+  // Obtener todos los pedidos de un usuario específico
   async getUserOrders(userId: string): Promise<Order[]> {
     try {
       const q = query(
@@ -62,7 +62,7 @@ export const orderService = {
         orders.push({ id: doc.id, ...doc.data() } as Order);
       });
       
-      // Sort in memory by createdAt desc
+      // Ordenar en memoria por createdAt desc
       orders.sort((a, b) => {
         const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
         const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
@@ -76,7 +76,7 @@ export const orderService = {
     }
   },
 
-  // Cancel an order
+  // Cancelar un pedido
   async cancelOrder(orderId: string): Promise<void> {
     try {
       const orderRef = doc(db, ORDERS_COLLECTION, orderId);
@@ -90,7 +90,7 @@ export const orderService = {
     }
   },
 
-  // Listen to real-time order status updates
+  // Escuchar actualizaciones del estado del pedido en tiempo real
   subscribeToOrderStatus(orderId: string, callback: (status: OrderStatus) => void): () => void {
     const orderRef = doc(db, ORDERS_COLLECTION, orderId);
     return onSnapshot(orderRef, (doc) => {
@@ -101,7 +101,7 @@ export const orderService = {
     });
   },
 
-  // Listen to the full order document explicitly
+  // Escuchar explícitamente el documento completo del pedido
   subscribeToOrder(orderId: string, callback: (order: Order | null) => void): () => void {
     const orderRef = doc(db, ORDERS_COLLECTION, orderId);
     return onSnapshot(orderRef, (docSnapshot) => {

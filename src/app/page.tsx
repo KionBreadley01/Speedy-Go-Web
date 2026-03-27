@@ -13,12 +13,12 @@ import { useToast } from '@/components/Toast';
 import styles from './page.module.css';
 
 const CATEGORIES = [
-  { label: 'Pizza',        image: '/categories/pizza.png' },
+  { label: 'Pizza', image: '/categories/pizza.png' },
   { label: 'Hamburguesas', image: '/categories/burger.png' },
-  { label: 'Tacos',        image: '/categories/tacos.png' },
-  { label: 'Sushi',        image: '/categories/sushi.png' },
-  { label: 'Saludable',    image: '/categories/healthy.png' },
-  { label: 'Súper',        image: '/categories/super.png' },
+  { label: 'Tacos', image: '/categories/tacos.png' },
+  { label: 'Sushi', image: '/categories/sushi.png' },
+  { label: 'Saludable', image: '/categories/healthy.png' },
+  { label: 'Súper', image: '/categories/super.png' },
 ];
 
 export default function Home() {
@@ -28,7 +28,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
-  
+
   const cartTotalItems = useCartStore((state) => state.getTotalItems());
   const cartTotalPrice = useCartStore((state) => state.getTotalPrice());
   const { setAddresses } = useAddressStore();
@@ -101,30 +101,30 @@ export default function Home() {
     }
   };
 
-  const filteredRestaurants = selectedCategory 
+  const filteredRestaurants = selectedCategory
     ? restaurants.filter(r => r.category.toLowerCase().includes(selectedCategory.toLowerCase()))
     : restaurants;
 
   const filteredProducts = selectedCategory
     ? products.filter(p => {
-         const rest = restaurants.find(r => r.id === p.restaurantId);
-         if (rest?.category.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
-         if (p.name.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
-         return false;
-      })
+      const rest = restaurants.find(r => r.id === p.restaurantId);
+      if (rest?.category.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
+      if (p.name.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
+      return false;
+    })
     : [];
 
   return (
     <div className={styles.container}>
-      {/* Hero Banner */}
+      {/* Banner Principal */}
       <div className={styles.heroBanner}>
         <div className={styles.heroContent}>
-          <h1 className={styles.heroTitle}>Tu comida favorita, <br/><span className={styles.heroHighlight}>a la velocidad de Speedy-Go</span></h1>
+          <h1 className={styles.heroTitle}>Tu comida a tu alcance, <br /><span className={styles.heroHighlight}>a la Velocidad de Speedy Go</span></h1>
           <p className={styles.heroSubtitle}>Descubre los mejores restaurantes y platos cerca de ti.</p>
         </div>
       </div>
 
-      {/* Categories Section */}
+      {/* Sección de Categorías */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Categorías</h2>
@@ -151,7 +151,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Selected Category Products */}
+      {/* Productos de la Categoría Seleccionada */}
       {selectedCategory && filteredProducts.length > 0 && (
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
@@ -177,14 +177,14 @@ export default function Home() {
         </section>
       )}
 
-      {/* Restaurants Section */}
+      {/* Sección de Restaurantes */}
       <section className={`${styles.section} ${styles.bottomPadding}`}>
         <div className={styles.sectionHeader}>
           <div className={styles.titleRow}>
             <div className={styles.boltBadge}>
               <Zap size={14} color="var(--white)" fill="var(--white)" />
             </div>
-            <h2 className={styles.sectionTitle}>Rápido cerca de ti</h2>
+            <h2 className={styles.sectionTitle}>Restaurantes cerca de ti</h2>
           </div>
         </div>
 
@@ -200,10 +200,10 @@ export default function Home() {
                   ) : (
                     <div className={styles.restaurantPlaceholder} />
                   )}
-                  
+
                   <button className={styles.likeBtn} onClick={(e) => toggleFavorite(e, r.id)}>
-                    <Heart 
-                      size={20} 
+                    <Heart
+                      size={20}
                       color={favorites.includes(r.id) ? "var(--primary)" : "var(--white)"}
                       fill={favorites.includes(r.id) ? "var(--primary)" : "transparent"}
                     />
@@ -214,7 +214,7 @@ export default function Home() {
                     <span className={styles.timeText}>{r.deliveryTime || '20-30 min'}</span>
                   </div>
                 </div>
-                
+
                 <div className={styles.restaurantInfo}>
                   <div className={styles.restaurantInfoRow}>
                     <div className={styles.restaurantTextData}>
@@ -235,7 +235,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* Floating Cart (Mobile mostly, but works well on web too) */}
+      {/* Carrito Flotante (Principalmente para móvil, pero funciona bien en web también) */}
       {mounted && cartTotalItems > 0 && (
         <div className={styles.cartFloatingWrap}>
           <button className={styles.cartFloatingBar} onClick={() => router.push('/cart')}>
