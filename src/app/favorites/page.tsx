@@ -6,8 +6,9 @@ import { auth } from '@/lib/firebase';
 import { userService } from '@/lib/services/userService';
 import { restaurantService, Restaurant } from '@/lib/services/restaurantService';
 import { Product } from '@/store/cartStore';
-import { ArrowLeft, Star, Clock, Trash2, Heart } from 'lucide-react';
+import { Star, Clock, Trash2, Heart } from 'lucide-react';
 import styles from './favorites.module.css';
+import BackButton from '@/components/BackButton';
 
 export default function Favorites() {
   const router = useRouter();
@@ -66,12 +67,22 @@ export default function Favorites() {
     await userService.deleteProductFavorite(user.uid, productId);
   };
 
+  if (loading) {
+     return (
+       <div className={styles.container}>
+         <header className={styles.header}>
+            <BackButton />
+            <h1 className={styles.title}>Mis Favoritos</h1>
+          </header>
+          <div className={styles.loading}>Cargando tus favoritos...</div>
+       </div>
+     );
+  }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <button className={styles.backBtn} onClick={() => router.back()}>
-          <ArrowLeft size={24} color="var(--slate-900)" />
-        </button>
+        <BackButton />
         <h1 className={styles.title}>Mis Favoritos</h1>
       </header>
 
@@ -91,9 +102,7 @@ export default function Favorites() {
       </div>
 
       <div className={styles.content}>
-        {loading ? (
-          <div className={styles.loading}>Cargando favoritos...</div>
-        ) : activeTab === 'restaurants' ? (
+        {activeTab === 'restaurants' ? (
           restaurants.length > 0 ? (
             <div className={styles.grid}>
               {restaurants.map(r => (
@@ -101,22 +110,22 @@ export default function Favorites() {
                   <div className={styles.imgWrapper}>
                     <img src={r.image || 'https://via.placeholder.com/400'} alt={r.name} className={styles.cardImg} />
                     <button className={styles.likeBtn} onClick={(e) => toggleRestaurantFavorite(e, r.id!)}>
-                      <Heart size={18} color="var(--primary)" fill="var(--primary)" />
+                      <Heart size={22} color="var(--primary)" fill="var(--primary)" />
                     </button>
                   </div>
                   <div className={styles.cardInfo}>
                     <h3 className={styles.cardName}>{r.name}</h3>
                     <p className={styles.cardCategory}>{r.category}</p>
                     <div className={styles.stats}>
-                      <span className={styles.stat}><Star size={14} color="var(--primary)" /> {r.rating}</span>
-                      <span className={styles.stat}><Clock size={14} color="var(--slate-500)" /> {r.deliveryTime} min</span>
+                      <span className={styles.stat}><Star size={16} color="var(--primary)" fill="var(--primary)" /> {r.rating}</span>
+                      <span className={styles.stat}><Clock size={16} color="var(--slate-500)" /> {r.deliveryTime} min</span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className={styles.emptyState}>No tienes restaurantes favoritos.</div>
+            <div className={styles.emptyState}>No tienes restaurantes favoritos aún.</div>
           )
         ) : (
           products.length > 0 ? (
@@ -126,7 +135,7 @@ export default function Favorites() {
                   <div className={styles.imgWrapper}>
                     <img src={p.image || 'https://via.placeholder.com/400'} alt={p.name} className={styles.cardImg} />
                     <button className={styles.likeBtn} onClick={(e) => toggleProductFavorite(e, p.id!)}>
-                      <Heart size={18} color="var(--primary)" fill="var(--primary)" />
+                      <Heart size={22} color="var(--primary)" fill="var(--primary)" />
                     </button>
                   </div>
                   <div className={styles.cardInfo}>
@@ -140,7 +149,7 @@ export default function Favorites() {
               ))}
             </div>
           ) : (
-            <div className={styles.emptyState}>No tienes productos favoritos.</div>
+            <div className={styles.emptyState}>No tienes productos favoritos aún.</div>
           )
         )}
       </div>

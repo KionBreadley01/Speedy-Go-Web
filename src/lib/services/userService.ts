@@ -15,7 +15,7 @@ export interface UserProfile {
 const USERS_COLLECTION = 'users';
 
 export const userService = {
-  // Get user profile data
+  // Obtener datos del perfil de usuario
   async getUserProfile(userId: string): Promise<UserProfile | null> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId);
@@ -31,11 +31,11 @@ export const userService = {
     }
   },
 
-  // Save or Update user profile
+  // Guardar o actualizar el perfil de usuario
   async saveUserProfile(userId: string, data: Partial<UserProfile>): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId);
-      // Merge true allows updating only the provided fields
+      // merge: true permite actualizar solo los campos proporcionados
       await setDoc(docRef, data, { merge: true });
     } catch (error) {
       console.error("Error saving user profile:", error);
@@ -43,7 +43,7 @@ export const userService = {
     }
   },
 
-  // Get all addresses for a user
+  // Obtener todas las direcciones de un usuario
   async getAddresses(userId: string): Promise<AddressItem[]> {
     try {
       const colRef = collection(db, USERS_COLLECTION, userId, 'addresses');
@@ -55,7 +55,7 @@ export const userService = {
     }
   },
 
-  // Add a new address
+  // Agregar una nueva dirección
   async addAddress(userId: string, address: AddressItem): Promise<string> {
     try {
       const colRef = collection(db, USERS_COLLECTION, userId, 'addresses');
@@ -67,7 +67,7 @@ export const userService = {
     }
   },
 
-  // Update an existing address
+  // Actualizar una dirección existente
   async updateAddress(userId: string, addressId: string, address: Partial<AddressItem>): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'addresses', addressId);
@@ -78,7 +78,7 @@ export const userService = {
     }
   },
 
-  // Delete an address
+  // Eliminar una dirección
   async deleteAddress(userId: string, addressId: string): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'addresses', addressId);
@@ -89,8 +89,8 @@ export const userService = {
     }
   },
 
-  // --- FAVORITES (ME GUSTAS) ---
-  // Get favorite restaurant IDs
+  // --- FAVORITOS (ME GUSTAS) ---
+  // Obtener los IDs de los restaurantes favoritos
   async getFavorites(userId: string): Promise<string[]> {
     try {
       const colRef = collection(db, USERS_COLLECTION, userId, 'favorites');
@@ -102,7 +102,7 @@ export const userService = {
     }
   },
 
-  // Add a favorite
+  // Agregar un favorito
   async addFavorite(userId: string, itemId: string): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'favorites', itemId);
@@ -113,7 +113,7 @@ export const userService = {
     }
   },
 
-  // Delete a favorite
+  // Eliminar un favorito
   async deleteFavorite(userId: string, itemId: string): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'favorites', itemId);
@@ -124,7 +124,7 @@ export const userService = {
     }
   },
 
-  // --- PRODUCT FAVORITES ---
+  // --- PRODUCTOS FAVORITOS ---
   async getProductFavorites(userId: string): Promise<string[]> {
     try {
       const colRef = collection(db, USERS_COLLECTION, userId, 'productFavorites');
@@ -157,7 +157,7 @@ export const userService = {
   },
 
 
-  // Delete user account from Firestore and Firebase Auth
+  // Eliminar la cuenta de usuario de Firestore y Firebase Auth
   async deleteUserAccount(user: User): Promise<void> {
     try {
       const userId = user.uid;

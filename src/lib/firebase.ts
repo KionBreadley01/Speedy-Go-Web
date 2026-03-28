@@ -15,7 +15,7 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-// Optional: Set default persistence to local storage
+// Opcional: Establecer el almacenamiento local como persistencia predeterminada
 setPersistence(auth, browserLocalPersistence).catch((error) => {
   console.error("Firebase Auth Persistence Error:", error);
 });

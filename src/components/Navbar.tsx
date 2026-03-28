@@ -29,7 +29,7 @@ export default function Navbar() {
           const orders = await orderService.getUserOrders(currentUser.uid);
           const active = orders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled');
           setActiveOrdersCount(active.length);
-        } catch { /* ignore */ }
+        } catch { /* ignorar */ }
       } else {
         setActiveOrdersCount(0);
       }
@@ -66,7 +66,7 @@ export default function Navbar() {
     <header className={styles.navbar}>
       <div className={styles.leftSection}>
         <Link href="/" className={styles.logo}>
-          Speedy-Go
+          Speedy Go
         </Link>
         <Link href="/addresses" className={styles.locationContainer}>
           <div className={styles.locationIconWrap}>
