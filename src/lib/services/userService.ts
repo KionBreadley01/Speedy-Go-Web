@@ -3,13 +3,30 @@ import { deleteUser, User } from 'firebase/auth';
 import { AddressItem } from '@/store/addressStore';
 import { db } from '../firebase';
 
+// ✅ NUEVO: tipo de rol
+export type UserRole = 'user' | 'restaurant';
+
+// ✅ INTERFAZ CORREGIDA
 export interface UserProfile {
-  firstName: string;
-  lastName: string;
   email: string;
   phone: string;
-  dob: string;
-  gender: 'Hombre' | 'Mujer' | 'Sin definir' | '35 tipo de Gey' | '';
+
+  // 🔥 FIX PRINCIPAL
+  role: UserRole;
+
+  // 👤 Usuario normal
+  firstName?: string;
+  lastName?: string;
+  dob?: string;
+  gender?: 'Hombre' | 'Mujer' | 'Sin definir' | '35 tipo de Gey' | '';
+
+  // 🍽️ Restaurante
+  restaurantName?: string;
+  ownerName?: string;
+  address?: string;
+  cuisineType?: string;
+
+  createdAt?: string;
 }
 
 const USERS_COLLECTION = 'users';
@@ -35,7 +52,6 @@ export const userService = {
   async saveUserProfile(userId: string, data: Partial<UserProfile>): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId);
-      // merge: true permite actualizar solo los campos proporcionados
       await setDoc(docRef, data, { merge: true });
     } catch (error) {
       console.error("Error saving user profile:", error);
@@ -48,7 +64,10 @@ export const userService = {
     try {
       const colRef = collection(db, USERS_COLLECTION, userId, 'addresses');
       const querySnap = await getDocs(colRef);
-      return querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as AddressItem));
+      return querySnap.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as AddressItem));
     } catch (error) {
       console.error("Error fetching addresses:", error);
       throw error;
@@ -68,7 +87,11 @@ export const userService = {
   },
 
   // Actualizar una dirección existente
-  async updateAddress(userId: string, addressId: string, address: Partial<AddressItem>): Promise<void> {
+  async updateAddress(
+    userId: string,
+    addressId: string,
+    address: Partial<AddressItem>
+  ): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'addresses', addressId);
       await updateDoc(docRef, address);
@@ -90,7 +113,6 @@ export const userService = {
   },
 
   // --- FAVORITOS (ME GUSTAS) ---
-  // Obtener los IDs de los restaurantes favoritos
   async getFavorites(userId: string): Promise<string[]> {
     try {
       const colRef = collection(db, USERS_COLLECTION, userId, 'favorites');
@@ -102,7 +124,6 @@ export const userService = {
     }
   },
 
-  // Agregar un favorito
   async addFavorite(userId: string, itemId: string): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'favorites', itemId);
@@ -113,7 +134,6 @@ export const userService = {
     }
   },
 
-  // Eliminar un favorito
   async deleteFavorite(userId: string, itemId: string): Promise<void> {
     try {
       const docRef = doc(db, USERS_COLLECTION, userId, 'favorites', itemId);
@@ -155,7 +175,6 @@ export const userService = {
       throw error;
     }
   },
-
 
   // Eliminar la cuenta de usuario de Firestore y Firebase Auth
   async deleteUserAccount(user: User): Promise<void> {

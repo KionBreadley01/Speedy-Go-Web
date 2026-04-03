@@ -74,7 +74,13 @@ export default function Login() {
 
         <p className={styles.footerText}>
           ¿No tienes una cuenta?{' '}
-          <Link href="/register" className={styles.link}>Regístrate aquí</Link>
+          <Link href="/register" className={styles.link}>
+            Usuario
+          </Link>
+          {' | '}
+          <Link href="/register-restaurant" className={styles.link}>
+            Restaurante
+          </Link>
         </p>
       </div>
     </div>
