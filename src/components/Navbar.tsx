@@ -49,7 +49,6 @@ export default function Navbar() {
           setActiveOrdersCount(0);
         }
       } else {
-        // 🔥 LIMPIA TODO (memoria + localStorage)
         setActiveOrdersCount(0);
         resetAddressStore();
       }
@@ -94,7 +93,9 @@ export default function Navbar() {
         </Link>
 
         <Link href="/addresses" className={styles.locationContainer}>
-          <MapPin size={20} color="var(--primary)" />
+          <div className={styles.locationIconWrap}>
+            <MapPin size={20} color="var(--primary)" />
+          </div>
 
           <div className={styles.locationTextContainer}>
             <div className={styles.locationText}>
@@ -106,16 +107,19 @@ export default function Navbar() {
             </div>
           </div>
 
-          <ChevronDown size={16} color="var(--slate-400)" />
+          <div className={styles.chevronWrap}>
+            <ChevronDown size={16} color="var(--slate-400)" />
+          </div>
         </Link>
       </div>
 
       <div className={styles.centerSection}>
         <div className={styles.searchBar}>
-          <Search size={20} />
+          <Search size={20} color="var(--slate-400)" />
           <input
             type="text"
             placeholder="¿Qué se te antoja hoy?"
+            className={styles.searchInput}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && e.currentTarget.value.trim()) {
                 router.push(`/search?q=${encodeURIComponent(e.currentTarget.value.trim())}`);
@@ -126,30 +130,54 @@ export default function Navbar() {
       </div>
 
       <div className={styles.rightSection}>
-        <Link href="/cart">
-          <ShoppingCart size={24} />
-          {cartCount > 0 && <span>{cartCount}</span>}
+        <Link href="/cart" className={styles.navButton}>
+          <div className={styles.iconWrap}>
+            <ShoppingCart size={24} />
+            {mounted && cartCount > 0 && (
+              <span className={styles.badge}>
+                {cartCount > 9 ? '9+' : cartCount}
+              </span>
+            )}
+          </div>
+          <span className={styles.navButtonText}>Carrito</span>
         </Link>
 
-        <Link href="/orders">
-          <ShoppingBag size={24} />
-          {activeOrdersCount > 0 && <span>{activeOrdersCount}</span>}
+        <Link href="/orders" className={styles.navButton}>
+          <div className={styles.iconWrap}>
+            <ShoppingBag size={24} />
+            {mounted && activeOrdersCount > 0 && (
+              <span className={styles.badge}>
+                {activeOrdersCount > 9 ? '9+' : activeOrdersCount}
+              </span>
+            )}
+          </div>
+          <span className={styles.navButtonText}>Pedidos</span>
         </Link>
 
-        <Link href="/coupons">
+        <Link href="/coupons" className={styles.navButton}>
           <Tag size={24} />
+          <span className={styles.navButtonText}>Cupones</span>
         </Link>
 
         {user ? (
-          <div onClick={() => router.push('/profile')}>
-            {user.email ? user.email[0].toUpperCase() : <UserIcon />}
+          <div
+            className={styles.userAvatar}
+            onClick={() => router.push('/profile')}
+            title={user.email || 'Perfil'}
+          >
+            {user.email
+              ? user.email[0].toUpperCase()
+              : <UserIcon size={20} />}
           </div>
         ) : (
-          <button onClick={() => router.push('/login')}>
-            <UserIcon />
+          <button
+            className={styles.authButton}
+            onClick={() => router.push('/login')}
+          >
+            <UserIcon size={20} />
             <span>Iniciar sesión</span>
           </button>
-        )} 
+        )}
       </div>
     </header>
   );
