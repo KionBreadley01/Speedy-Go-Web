@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -6,10 +6,12 @@ import Link from 'next/link';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { userService } from '@/lib/services/userService';
+import { restaurantService } from '@/lib/services/restaurantService';
 import styles from '../login/auth.module.css';
 
 export default function RegisterRestaurant() {
   const router = useRouter();
+
   const [formData, setFormData] = useState({
     restaurantName: '',
     ownerName: '',
@@ -20,11 +22,15 @@ export default function RegisterRestaurant() {
     password: '',
     confirmPassword: ''
   });
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.id]: e.target.value }));
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -39,15 +45,31 @@ export default function RegisterRestaurant() {
     }
 
     try {
+      // 🔐 Crear usuario
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
-      
-      // Guardar perfil del restaurante
-      await userService.saveUserProfile(userCredential.user.uid, {
-        role: 'restaurant',
+
+      const uid = userCredential.user.uid;
+
+      // 🏪 Crear restaurante
+      const restaurantId = await restaurantService.createRestaurant({
+        name: formData.restaurantName,
+        category: formData.cuisineType,
+        rating: 0,
+        deliveryTime: '30-40 min',
+        deliveryFee: 0,
+        image: '',
+        ownerId: uid,
+        createdAt: new Date().toISOString()
+      });
+
+      // 👤 Guardar usuario como restaurant_owner
+      await userService.saveUserProfile(uid, {
+        role: 'restaurant_owner',
+        restaurantId,
         restaurantName: formData.restaurantName,
         ownerName: formData.ownerName,
         email: formData.email,
@@ -58,6 +80,7 @@ export default function RegisterRestaurant() {
       });
 
       router.push('/restaurant/dashboard');
+
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'Error al crear la cuenta.');
@@ -79,134 +102,24 @@ export default function RegisterRestaurant() {
         {error && <div className={styles.errorAlert}>{error}</div>}
 
         <form onSubmit={handleRegister} className={styles.form}>
-          
-          <div className={styles.inputGroup}>
-            <label htmlFor="restaurantName" className={styles.label}>
-              Nombre del Restaurante
-            </label>
-            <input
-              id="restaurantName"
-              type="text"
-              className={styles.input}
-              required
-              value={formData.restaurantName}
-              onChange={handleChange}
-            />
-          </div>
 
-          <div className={styles.inputGroup}>
-            <label htmlFor="ownerName" className={styles.label}>
-              Nombre del Propietario
-            </label>
-            <input
-              id="ownerName"
-              type="text"
-              className={styles.input}
-              required
-              value={formData.ownerName}
-              onChange={handleChange}
-            />
-          </div>
+          <input id="restaurantName" placeholder="Nombre del Restaurante" onChange={handleChange} required />
+          <input id="ownerName" placeholder="Nombre del Propietario" onChange={handleChange} required />
+          <input id="email" type="email" placeholder="Correo Electrónico" onChange={handleChange} required />
+          <input id="phone" placeholder="Teléfono" onChange={handleChange} required />
+          <input id="address" placeholder="Dirección" onChange={handleChange} required />
+          <input id="cuisineType" placeholder="Tipo de Comida" onChange={handleChange} required />
+          <input id="password" type="password" placeholder="Contraseña" onChange={handleChange} required />
+          <input id="confirmPassword" type="password" placeholder="Confirmar Contraseña" onChange={handleChange} required />
 
-          <div className={styles.inputGroup}>
-            <label htmlFor="email" className={styles.label}>
-              Correo Electrónico
-            </label>
-            <input
-              id="email"
-              type="email"
-              className={styles.input}
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="phone" className={styles.label}>
-              Teléfono
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              className={styles.input}
-              required
-              value={formData.phone}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="address" className={styles.label}>
-              Dirección del Restaurante
-            </label>
-            <input
-              id="address"
-              type="text"
-              className={styles.input}
-              required
-              value={formData.address}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="cuisineType" className={styles.label}>
-              Tipo de Comida
-            </label>
-            <input
-              id="cuisineType"
-              type="text"
-              className={styles.input}
-              placeholder="Ej. Mexicana, Italiana, Fast Food"
-              required
-              value={formData.cuisineType}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="password" className={styles.label}>
-              Contraseña
-            </label>
-            <input
-              id="password"
-              type="password"
-              className={styles.input}
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label htmlFor="confirmPassword" className={styles.label}>
-              Confirmar Contraseña
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              className={styles.input}
-              required
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={styles.button}
-            disabled={loading}
-          >
+          <button type="submit" disabled={loading}>
             {loading ? 'Registrando restaurante...' : 'Registrar Restaurante'}
           </button>
         </form>
 
         <p className={styles.footerText}>
           ¿Ya tienes cuenta?{' '}
-          <Link href="/login" className={styles.link}>
-            Inicia sesión
-          </Link>
+          <Link href="/login">Inicia sesión</Link>
         </p>
       </div>
     </div>
