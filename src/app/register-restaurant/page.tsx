@@ -38,8 +38,20 @@ export default function RegisterRestaurant() {
   setLoading(true);
   setError('');
 
+  if (Object.values(formData).some(value => value.trim() === '')) {
+    setError('Por favor, rellena todos los campos para continuar.');
+    setLoading(false);
+    return;
+  }
+
   if (formData.password !== formData.confirmPassword) {
     setError('Las contraseñas no coinciden.');
+    setLoading(false);
+    return;
+  }
+
+  if (formData.password.length < 6) {
+    setError('La contraseña debe tener al menos 6 caracteres.');
     setLoading(false);
     return;
   }
@@ -68,8 +80,8 @@ export default function RegisterRestaurant() {
       createdAt: new Date().toISOString()
     });
 
-    // 👤 Guardar usuario
-    await userService.saveUserProfile(uid, {
+    // 👤 Guardar usuario en coleccion restaurant_owner
+    await userService.saveRestaurantOwner(uid, {
       role: 'restaurant_owner',
       restaurantId,
       restaurantName: formData.restaurantName,
@@ -84,18 +96,21 @@ export default function RegisterRestaurant() {
     router.push('/restaurant/dashboard');
 
   } catch (err: any) {
-    console.error(err);
-
     // 🔥 rollback si algo falla
     if (uid && auth.currentUser) {
       try {
         await auth.currentUser.delete();
       } catch (e) {
-        console.error('Rollback failed:', e);
+        // silent rollback fail
       }
     }
 
-    setError(err.message || 'Error al crear la cuenta.');
+    if (err.code === 'auth/email-already-in-use') {
+      setError('Este correo electrónico ya está registrado con un restaurante o usuario.');
+    } else {
+      console.error(err);
+      setError(err.message || 'Error al crear la cuenta.');
+    }
   } finally {
     setLoading(false);
   }

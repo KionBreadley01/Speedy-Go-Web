@@ -8,6 +8,7 @@ export interface Product {
   price: number;
   image?: string;
   restaurantId: string;
+  category?: string;
 }
 
 export interface CartItem extends Product {

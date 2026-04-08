@@ -40,6 +40,7 @@ export interface UserProfile {
 }
 
 const USERS_COLLECTION = 'users';
+const RESTAURANT_OWNER_COLLECTION = 'restaurant_owner';
 
 export const userService = {
   // ✅ Obtener perfil
@@ -50,6 +51,13 @@ export const userService = {
 
       if (docSnap.exists()) {
         return docSnap.data() as UserProfile;
+      }
+
+      // Si no es un usuario normal, intentamos buscar en restaurant_owner
+      const ownerRef = doc(db, RESTAURANT_OWNER_COLLECTION, userId);
+      const ownerSnap = await getDoc(ownerRef);
+      if (ownerSnap.exists()) {
+        return ownerSnap.data() as UserProfile;
       }
 
       return null;
@@ -70,6 +78,20 @@ export const userService = {
       await setDoc(docRef, data, { merge: true });
     } catch (error) {
       console.error("Error saving user profile:", error);
+      throw error;
+    }
+  },
+
+  // ✅ Guardar perfil de dueño de restaurante
+  async saveRestaurantOwner(
+    userId: string,
+    data: Partial<UserProfile>
+  ): Promise<void> {
+    try {
+      const docRef = doc(db, RESTAURANT_OWNER_COLLECTION, userId);
+      await setDoc(docRef, data, { merge: true });
+    } catch (error) {
+      console.error("Error saving restaurant owner profile:", error);
       throw error;
     }
   },

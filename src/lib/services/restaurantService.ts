@@ -126,5 +126,46 @@ export const restaurantService = {
       console.error(`Error fetching product ${id}:`, error);
       throw error;
     }
+  },
+
+  // ✅ Obtener todas las categorias
+  async getCategories() {
+    try {
+      const q = query(collection(db, "categories"));
+      const querySnapshot = await getDocs(q);
+      
+      const categories: { id: string; label: string; image: string; order: number }[] = [];
+      querySnapshot.forEach((doc) => {
+        const d = doc.data();
+        categories.push({ 
+          id: doc.id, 
+          label: d.name, 
+          image: d.icon || d.image || 'https://via.placeholder.com/150',
+          order: d.order || 99
+        });
+      });
+      return categories.sort((a,b) => a.order - b.order);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      throw error;
+    }
+  },
+
+  // ✅ Obtener promociones activas
+  async getPromotions(): Promise<any[]> {
+    try {
+      const q = query(collection(db, "promotions"), where("active", "==", true));
+      const querySnapshot = await getDocs(q);
+      
+      const promos: any[] = [];
+      querySnapshot.forEach((doc) => {
+        promos.push({ id: doc.id, ...doc.data() });
+      });
+      return promos;
+    } catch (error) {
+      console.error("Error fetching promotions:", error);
+      throw error;
+    }
   }
 };
+// Force Turbopack reload
