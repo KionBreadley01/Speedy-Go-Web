@@ -45,6 +45,7 @@ export default function Register() {
         lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
+        role: 'user',
         dob: '',
         gender: ''
       });

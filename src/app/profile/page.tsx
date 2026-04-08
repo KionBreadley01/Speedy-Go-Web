@@ -2,9 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { auth } from '@/lib/firebase';
 import { userService, UserProfile } from '@/lib/services/userService';
-import { Settings, HelpCircle, Heart, MapPin, Truck, Store, FileText, LogOut, ChevronRight } from 'lucide-react';
+
+import {
+  Settings,
+  HelpCircle,
+  Heart,
+  MapPin,
+  Store,
+  FileText,
+  LogOut,
+  ChevronRight
+} from 'lucide-react';
+
 import styles from './profile.module.css';
 import ConfirmModal from '@/components/ConfirmModal';
 
@@ -15,13 +27,9 @@ const MI_CUENTA_ITEMS = [
   { icon: MapPin, label: 'Mi dirección', route: '/addresses?from=profile' },
 ];
 
-const OTROS_ITEMS = [
-  { icon: Truck, label: 'Sé socio repartidor', route: null },
-  { icon: Store, label: 'Abrir una tienda', route: null },
-];
-
 export default function Profile() {
   const router = useRouter();
+
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -40,6 +48,7 @@ export default function Profile() {
       }
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, [router]);
 
@@ -61,10 +70,20 @@ export default function Profile() {
   };
 
   const getDisplayName = () => {
+    if (profile?.role === 'restaurant') {
+      return profile.restaurantName || 'Restaurante';
+    }
+
     if (profile?.firstName) {
       return `${profile.firstName} ${profile.lastName ? profile.lastName[0] + '.' : ''}`;
     }
+
     return auth.currentUser?.email?.split('@')[0] || 'Usuario';
+  };
+
+  const getUserRoleLabel = () => {
+    if (!profile?.role) return '';
+    return profile.role === 'restaurant' ? 'Restaurante' : 'Usuario';
   };
 
   if (loading) {
@@ -73,14 +92,22 @@ export default function Profile() {
 
   return (
     <div className={styles.container}>
+
+      {/* SIDEBAR */}
       <div className={styles.sidebar}>
         <h1 className={styles.headerTitle}>Mi Cuenta</h1>
 
         <div className={styles.userInfoContainer}>
           <div className={styles.avatarCircle}>{getInitials()}</div>
+
           <div className={styles.userDetails}>
             <h2 className={styles.userName}>{getDisplayName()}</h2>
-            <button className={styles.editProfileBtn} onClick={() => router.push('/edit-profile')}>
+            <p className={styles.userRole}>{getUserRoleLabel()}</p>
+
+            <button
+              className={styles.editProfileBtn}
+              onClick={() => router.push('/edit-profile')}
+            >
               Editar perfil
             </button>
           </div>
@@ -92,7 +119,10 @@ export default function Profile() {
         </button>
       </div>
 
+      {/* MAIN */}
       <div className={styles.mainContent}>
+
+        {/* PREFERENCIAS */}
         <div className={styles.sectionCard}>
           <h3 className={styles.sectionTitle}>Preferencias</h3>
           <div className={styles.listContainer}>
@@ -114,24 +144,29 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className={styles.sectionCard}>
-          <h3 className={styles.sectionTitle}>Oportunidades</h3>
-          <div className={styles.listContainer}>
-            {OTROS_ITEMS.map((item, index) => (
-              <button key={index} className={styles.listItem}>
+        {/* 🔥 SOLO RESTAURANTES */}
+        {profile?.role === 'restaurant' && (
+          <div className={styles.sectionCard}>
+            <h3 className={styles.sectionTitle}>Oportunidades</h3>
+            <div className={styles.listContainer}>
+              {/* USANDO LINK PARA EVITAR 404 */}
+              <Link href="/restaurant" className={styles.listItem}>
                 <div className={styles.listLeft}>
                   <div className={styles.iconWrap}>
-                    <item.icon size={22} />
+                    <Store size={22} />
                   </div>
-                  <span className={styles.listLabel}>{item.label}</span>
+                  <span className={styles.listLabel}>Ver restaurante</span>
                 </div>
                 <ChevronRight className={styles.chevron} size={18} />
-              </button>
-            ))}
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
 
-        <button className={styles.floatingOrderBtn} onClick={() => router.push('/orders')}>
+        <button
+          className={styles.floatingOrderBtn}
+          onClick={() => router.push('/orders')}
+        >
           <FileText size={24} />
           <span>Ver mis pedidos anteriores</span>
         </button>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -32,6 +32,8 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
+      
+      {/* Card principal (login) */}
       <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>Iniciar sesión</h1>
@@ -42,11 +44,13 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label htmlFor="email" className={styles.label}>Correo Electrónico</label>
-            <input 
+            <label htmlFor="email" className={styles.label}>
+              Correo Electrónico
+            </label>
+            <input
               id="email"
-              type="email" 
-              className={styles.input} 
+              type="email"
+              className={styles.input}
               placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -55,11 +59,13 @@ export default function Login() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label htmlFor="password" className={styles.label}>Contraseña</label>
-            <input 
+            <label htmlFor="password" className={styles.label}>
+              Contraseña
+            </label>
+            <input
               id="password"
-              type="password" 
-              className={styles.input} 
+              type="password"
+              className={styles.input}
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -72,11 +78,32 @@ export default function Login() {
           </button>
         </form>
 
+        {/* Registro usuario */}
         <p className={styles.footerText}>
           ¿No tienes una cuenta?{' '}
-          <Link href="/register" className={styles.link}>Regístrate aquí</Link>
+          <Link href="/register" className={styles.link}>
+            Regístrate aquí
+          </Link>
         </p>
       </div>
+
+      {/* Card separada (restaurante) */}
+      <div className={styles.restaurantCard}>
+        <h2 className={styles.restaurantTitle}>
+          ¿Tienes un restaurante?
+        </h2>
+        <p className={styles.restaurantSubtitle}>
+          Registra tu negocio y comienza a recibir pedidos.
+        </p>
+
+        <Link
+          href="/register-restaurant"
+          className={styles.restaurantButton}
+        >
+          Registrar restaurante
+        </Link>
+      </div>
+
     </div>
   );
 }
