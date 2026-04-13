@@ -23,7 +23,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
-  const [showAllCategories, setShowAllCategories] = useState(false);
 
   const cartTotalItems = useCartStore((state) => state.getTotalItems());
   const cartTotalPrice = useCartStore((state) => state.getTotalPrice());
@@ -140,7 +139,7 @@ export default function Home() {
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Categorías</h2>
-          <span className={styles.seeAll} onClick={() => setShowAllCategories(true)}>Ver todo</span>
+          <span className={styles.seeAll}>Ver todo</span>
         </div>
         <div className={styles.horizontalScroll}>
           {categories.map((cat, i) => {
@@ -255,36 +254,6 @@ export default function Home() {
             <span className={styles.cartLabel}>Ver Carrito</span>
             <span className={styles.cartTotal}>${cartTotalPrice.toFixed(2)}</span>
           </button>
-        </div>
-      )}
-
-      {/* Modal/Overlay Todas las Categorías */}
-      {showAllCategories && (
-        <div className={styles.modalOverlay} onClick={() => setShowAllCategories(false)}>
-          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
-            <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>Todas las Categorías</h2>
-              <button className={styles.closeBtn} onClick={() => setShowAllCategories(false)}>×</button>
-            </div>
-            <div className={styles.categoriesGrid}>
-              {categories.map((cat, i) => (
-                <div 
-                  key={i} 
-                  className={styles.modalCategoryItem} 
-                  onClick={() => {
-                    setSelectedCategory(cat.label);
-                    setShowAllCategories(false);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
-                  }}
-                >
-                  <div className={styles.categoryCircle}>
-                    <Image src={cat.image} alt={cat.label} width={60} height={60} />
-                  </div>
-                  <span className={styles.categoryLabel}>{cat.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       )}
     </div>

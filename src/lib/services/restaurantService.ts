@@ -30,12 +30,7 @@ export const restaurantService = {
   // ✅ Crear restaurante
   async createRestaurant(data: Omit<Restaurant, 'id'>) {
     try {
-      const docRef = await addDoc(collection(db, RESTAURANTS_COLLECTION), {
-        ...data,
-        status: "active",   // Activo por defecto desde el primer momento
-        featured: false,
-        rating: data.rating ?? 0,
-      });
+      const docRef = await addDoc(collection(db, RESTAURANTS_COLLECTION), data);
       return docRef.id;
     } catch (error) {
       console.error("Error creating restaurant:", error);
