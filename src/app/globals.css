@@ -48,3 +48,12 @@ body {
 input, button {
   font-family: inherit;
 }
+
+/* Global Form Validation Indicators */
+.form-submitted-attempt input:invalid,
+.form-submitted-attempt select:invalid,
+.form-submitted-attempt textarea:invalid {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+}

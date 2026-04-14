@@ -113,6 +113,11 @@ export default function Addresses() {
     const user = auth.currentUser;
     if (!user) return;
 
+    if (!description || !type) {
+      showToast('Por favor rellena todos los campos obligatorios para continuar.', 'error');
+      return;
+    }
+
     try {
       const addrData = {
         title: title || tag || type,

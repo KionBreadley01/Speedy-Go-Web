@@ -19,12 +19,26 @@ export default function Login() {
     setLoading(true);
     setError('');
 
+    if (!email.trim() || !password.trim()) {
+      setError('Por favor, rellena ambos campos para poder entrar.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email.trim(), password);
       router.push('/');
     } catch (err: any) {
-      console.error(err);
-      setError('Credenciales inválidas o usuario no encontrado.');
+      console.error("Firebase Login Error:", err.code, err.message);
+      if (err.code === 'auth/invalid-credential') {
+        setError('El correo o contraseña son incorrectos. (Verifica si hay espacios extra)');
+      } else if (err.code === 'auth/user-not-found') {
+        setError('No existe cuenta con este correo.');
+      } else if (err.code === 'auth/wrong-password') {
+        setError('Contraseña incorrecta.');
+      } else {
+        setError(`Error del servidor: ${err.message}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -87,21 +101,39 @@ export default function Login() {
         </p>
       </div>
 
-      {/* Card separada (restaurante) */}
-      <div className={styles.restaurantCard}>
-        <h2 className={styles.restaurantTitle}>
-          ¿Tienes un restaurante?
-        </h2>
-        <p className={styles.restaurantSubtitle}>
-          Registra tu negocio y comienza a recibir pedidos.
-        </p>
+      <div className={styles.sideCardsWrapper} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {/* Card separada (restaurante) */}
+        <div className={styles.restaurantCard}>
+          <h2 className={styles.restaurantTitle}>
+            ¿Tienes un restaurante?
+          </h2>
+          <p className={styles.restaurantSubtitle}>
+            Registra tu negocio y comienza a recibir pedidos.
+          </p>
+          <Link
+            href="/register-restaurant"
+            className={styles.restaurantButton}
+          >
+            Registrar restaurante
+          </Link>
+        </div>
 
-        <Link
-          href="/register-restaurant"
-          className={styles.restaurantButton}
-        >
-          Registrar restaurante
-        </Link>
+        {/* Card separada (repartidor) */}
+        <div className={styles.restaurantCard} style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' }}>
+          <h2 className={styles.restaurantTitle} style={{ color: 'white' }}>
+            ¿Quieres ser socio repartidor?
+          </h2>
+          <p className={styles.restaurantSubtitle} style={{ color: '#94a3b8' }}>
+            Únete a nuestra flota y genera ganancias en tu tiempo libre.
+          </p>
+          <Link
+            href="/register-driver"
+            className={styles.restaurantButton}
+            style={{ backgroundColor: '#f97316', color: 'white' }}
+          >
+            Registrarme como repartidor
+          </Link>
+        </div>
       </div>
 
     </div>

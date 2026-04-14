@@ -30,6 +30,12 @@ export default function Register() {
     setLoading(true);
     setError('');
 
+    if (Object.values(formData).some(value => value.trim() === '')) {
+      setError('Por favor, rellena todos los campos para continuar.');
+      setLoading(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden.');
       setLoading(false);
@@ -52,8 +58,14 @@ export default function Register() {
 
       router.push('/');
     } catch (err: any) {
-      console.error(err);
-      setError(err.message || 'Error al crear la cuenta.');
+      console.error("Registration Error:", err);
+      if (err.code === 'auth/email-already-in-use') {
+        setError('Este correo electrónico ya está registrado. Por favor, intenta iniciar sesión.');
+      } else if (err.code === 'auth/weak-password') {
+        setError('La contraseña es demasiado débil. Usa al menos 6 caracteres.');
+      } else {
+        setError(`Error del servidor: ${err.message}`);
+      }
     } finally {
       setLoading(false);
     }

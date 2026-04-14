@@ -8,26 +8,22 @@ import { Product, useCartStore } from '@/store/cartStore';
 import { useAddressStore } from '@/store/addressStore';
 import { auth } from '@/lib/firebase';
 import { userService } from '@/lib/services/userService';
-import { Heart, Clock, Star, Zap } from 'lucide-react';
+import { Heart, Clock, Star, Zap, Ticket } from 'lucide-react';
 import { useToast } from '@/components/Toast';
 import styles from './page.module.css';
 
-const CATEGORIES = [
-  { label: 'Pizza', image: '/categories/pizza.png' },
-  { label: 'Hamburguesas', image: '/categories/burger.png' },
-  { label: 'Tacos', image: '/categories/tacos.png' },
-  { label: 'Sushi', image: '/categories/sushi.png' },
-  { label: 'Saludable', image: '/categories/healthy.png' },
-  { label: 'Súper', image: '/categories/super.png' },
-];
+// NO HARDCODED CATEGORIES
 
 export default function Home() {
   const router = useRouter();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [promotions, setPromotions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [showAllCategories, setShowAllCategories] = useState(false);
 
   const cartTotalItems = useCartStore((state) => state.getTotalItems());
   const cartTotalPrice = useCartStore((state) => state.getTotalPrice());
@@ -60,12 +56,16 @@ export default function Home() {
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [rests, prods] = await Promise.all([
+        const [rests, prods, cats, promos] = await Promise.all([
           restaurantService.getRestaurants(),
-          restaurantService.getProducts()
+          restaurantService.getProducts(),
+          restaurantService.getCategories().catch(() => []),
+          restaurantService.getPromotions().catch(() => [])
         ]);
         setRestaurants(rests);
         setProducts(prods);
+        setCategories(cats);
+        setPromotions(promos);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       } finally {
@@ -102,14 +102,24 @@ export default function Home() {
   };
 
   const filteredRestaurants = selectedCategory
-    ? restaurants.filter(r => r.category.toLowerCase().includes(selectedCategory.toLowerCase()))
+    ? restaurants.filter(r => {
+        if (r.category && r.category.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
+        // Si no coincide su categoría principal, checamos si tiene algún producto que coincida
+        const hasMatchingProduct = products.some(p => 
+          p.restaurantId === r.id && 
+          ((p.category && p.category.toLowerCase().includes(selectedCategory.toLowerCase())) || 
+           (p.name && p.name.toLowerCase().includes(selectedCategory.toLowerCase())))
+        );
+        return hasMatchingProduct;
+      })
     : restaurants;
 
   const filteredProducts = selectedCategory
     ? products.filter(p => {
       const rest = restaurants.find(r => r.id === p.restaurantId);
-      if (rest?.category.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
-      if (p.name.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
+      if (rest?.category && rest.category.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
+      if (p.category && p.category.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
+      if (p.name && p.name.toLowerCase().includes(selectedCategory.toLowerCase())) return true;
       return false;
     })
     : [];
@@ -124,14 +134,16 @@ export default function Home() {
         </div>
       </div>
 
+
+
       {/* Sección de Categorías */}
       <section className={styles.section}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>Categorías</h2>
-          <span className={styles.seeAll}>Ver todo</span>
+          <span className={styles.seeAll} onClick={() => setShowAllCategories(true)}>Ver todo</span>
         </div>
         <div className={styles.horizontalScroll}>
-          {CATEGORIES.map((cat, i) => {
+          {categories.map((cat, i) => {
             const isActive = selectedCategory?.toLowerCase() === cat.label.toLowerCase();
             return (
               <button
@@ -243,6 +255,36 @@ export default function Home() {
             <span className={styles.cartLabel}>Ver Carrito</span>
             <span className={styles.cartTotal}>${cartTotalPrice.toFixed(2)}</span>
           </button>
+        </div>
+      )}
+
+      {/* Modal/Overlay Todas las Categorías */}
+      {showAllCategories && (
+        <div className={styles.modalOverlay} onClick={() => setShowAllCategories(false)}>
+          <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Todas las Categorías</h2>
+              <button className={styles.closeBtn} onClick={() => setShowAllCategories(false)}>×</button>
+            </div>
+            <div className={styles.categoriesGrid}>
+              {categories.map((cat, i) => (
+                <div 
+                  key={i} 
+                  className={styles.modalCategoryItem} 
+                  onClick={() => {
+                    setSelectedCategory(cat.label);
+                    setShowAllCategories(false);
+                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                  }}
+                >
+                  <div className={styles.categoryCircle}>
+                    <Image src={cat.image} alt={cat.label} width={60} height={60} />
+                  </div>
+                  <span className={styles.categoryLabel}>{cat.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

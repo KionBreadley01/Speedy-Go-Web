@@ -19,6 +19,7 @@ export default function EditProfile() {
     phone: '',
     dob: '',
     gender: '',
+    role: 'user',
   });
 
   const [alert, setAlert] = useState<{ type: 'error' | 'success', msg: string } | null>(null);
@@ -40,6 +41,7 @@ export default function EditProfile() {
             phone: data.phone || '',
             dob: data.dob || '',
             gender: data.gender || '',
+            role: data.role || 'user',
           });
         }
       } catch (err) {
@@ -58,6 +60,13 @@ export default function EditProfile() {
 
     setSaving(true);
     setAlert(null);
+
+    // Validación estricta
+    if (!(form.firstName||'').trim() || !(form.lastName||'').trim() || !(form.phone||'').trim() || !form.dob || !form.gender) {
+      setAlert({ type: 'error', msg: 'Por favor, rellena todos los campos para guardar los cambios.' });
+      setSaving(false);
+      return;
+    }
     try {
       await userService.saveUserProfile(user.uid, form);
       setAlert({ type: 'success', msg: 'Perfil actualizado correctamente.' });
