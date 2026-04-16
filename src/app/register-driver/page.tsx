@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
+import { User, Mail, Phone, Lock, Loader2, ArrowRight, Truck, FileText } from 'lucide-react';
 import styles from '../login/auth.module.css';
 
 export default function RegisterDriver() {
@@ -37,7 +38,7 @@ export default function RegisterDriver() {
     setError('');
 
     if (Object.values(formData).some(value => value.trim() === '')) {
-      setError('Por favor, rellena todos los campos para continuar.');
+      setError('Por favor, rellena todos los campos.');
       setLoading(false);
       return;
     }
@@ -48,16 +49,9 @@ export default function RegisterDriver() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
-      setLoading(false);
-      return;
-    }
-
     let uid: string | null = null;
 
     try {
-      // 1. Crear usuario en Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email.trim(),
@@ -66,23 +60,19 @@ export default function RegisterDriver() {
 
       uid = userCredential.user.uid;
 
-      // 2. Guardar en coleccion drivers
       await setDoc(doc(db, 'drivers', uid), {
         name: formData.name,
         email: formData.email.trim(),
         phone: formData.phone,
         documentId: formData.documentId,
-        birthDate: '', 
         vehicle: {
-          type: formData.vehicleType as any,
+          type: formData.vehicleType,
           brand: 'N/A',
           model: 'N/A',
           plate: 'N/A',
           color: 'N/A'
         },
-        zones: [],
-        bankAccount: '',
-        status: 'under_review', // Requiere aprobación
+        status: 'under_review',
         currentStatus: 'offline',
         rating: 5,
         totalDeliveries: 0,
@@ -90,27 +80,13 @@ export default function RegisterDriver() {
         role: 'driver'
       });
 
-      alert("Cuenta creada exitosamente. Tu solicitud como repartidor está bajo revisión.");
-      
       router.push('/');
 
     } catch (err: any) {
-      console.error(err);
-
-      // Rollback
       if (uid && auth.currentUser) {
-        try {
-          await auth.currentUser.delete();
-        } catch (e) {
-          console.error('Rollback failed:', e);
-        }
+        try { await auth.currentUser.delete(); } catch (e) {}
       }
-
-      if (err.code === 'auth/email-already-in-use') {
-        setError('Este correo electrónico ya está en uso. Por favor, inicia sesión u usa otra dirección.');
-      } else {
-        setError(err.message || 'Error al crear la cuenta de repartidor.');
-      }
+      setError('Error al crear la cuenta. Intenta de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -118,45 +94,97 @@ export default function RegisterDriver() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <div className={styles.header}>
-          <h1 className={styles.title} style={{ color: '#0f172a' }}>Socio Repartidor</h1>
-          <p className={styles.subtitle}>
-            Genera ganancias entregando pedidos cuando tú quieras.
+      <aside className={styles.heroSection}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>Socio Repartidor</h1>
+          <p className={styles.heroSubtitle}>
+            Sé tu propio jefe y genera ingresos entregando pedidos en tu ciudad.
           </p>
         </div>
+      </aside>
 
-        {error && <div className={styles.errorAlert}>{error}</div>}
-
-        <form onSubmit={handleRegister} className={styles.form}>
-
-          <input id="name" placeholder="Nombre completo" onChange={handleChange} required className={styles.input} />
-          <input id="email" type="email" placeholder="Correo Electrónico" onChange={handleChange} required className={styles.input} />
-          <input id="phone" placeholder="Celular" onChange={handleChange} required className={styles.input} />
-          <input id="documentId" placeholder="Identidad / INE" onChange={handleChange} required className={styles.input} />
-          
-          <div className={styles.inputGroup}>
-            <label htmlFor="vehicleType" className={styles.label}>Tipo de Vehículo</label>
-            <select id="vehicleType" value={formData.vehicleType} onChange={handleChange} required className={styles.input} style={{ height: '45px', padding: '0 12px' }}>
-              <option value="motorcycle">Motocicleta</option>
-              <option value="bicycle">Bicicleta</option>
-              <option value="car">Automóvil</option>
-            </select>
+      <main className={styles.loginSection}>
+        <div className={styles.card}>
+          <div className={styles.header}>
+            <h2 className={styles.title}>Registrarme como Socio</h2>
+            <p className={styles.subtitle}>Únete a nuestra flota de repartidores.</p>
           </div>
 
-          <input id="password" type="password" placeholder="Contraseña" onChange={handleChange} required className={styles.input} />
-          <input id="confirmPassword" type="password" placeholder="Confirmar Contraseña" onChange={handleChange} required className={styles.input} />
+          {error && <div className={styles.errorAlert}>{error}</div>}
 
-          <button type="submit" disabled={loading} className={styles.button} style={{ backgroundColor: '#0f172a' }}>
-            {loading ? 'Registrando...' : 'Registrarme'}
-          </button>
-        </form>
+          <form onSubmit={handleRegister} className={styles.form}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="name" className={styles.label}>Nombre Completo</label>
+              <div className={styles.inputWrapper}>
+                <User className={styles.inputIcon} size={18} />
+                <input id="name" className={styles.input} placeholder="Juan Pérez" onChange={handleChange} required />
+              </div>
+            </div>
 
-        <p className={styles.footerText}>
-          ¿Ya tienes cuenta?{' '}
-          <Link href="/login" className={styles.link}>Inicia sesión aquí</Link>
-        </p>
-      </div>
+            <div className={styles.row}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="email" className={styles.label}>Email</label>
+                <div className={styles.inputWrapper}>
+                  <Mail className={styles.inputIcon} size={18} />
+                  <input id="email" type="email" className={styles.input} placeholder="juan@correo.com" onChange={handleChange} required />
+                </div>
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="phone" className={styles.label}>Teléfono</label>
+                <div className={styles.inputWrapper}>
+                  <Phone className={styles.inputIcon} size={18} />
+                  <input id="phone" className={styles.input} placeholder="10 dígitos" onChange={handleChange} required />
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="documentId" className={styles.label}>ID de Documento (INE / Licencia)</label>
+              <div className={styles.inputWrapper}>
+                <FileText className={styles.inputIcon} size={18} />
+                <input id="documentId" className={styles.input} placeholder="Número de identificación" onChange={handleChange} required />
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="vehicleType" className={styles.label}>Tipo de Vehículo</label>
+              <div className={styles.inputWrapper}>
+                <Truck className={styles.inputIcon} size={18} />
+                <select id="vehicleType" value={formData.vehicleType} onChange={handleChange} required className={styles.input} style={{ height: '48.5px', padding: '0 44px' }}>
+                  <option value="motorcycle">Motocicleta</option>
+                  <option value="bicycle">Bicicleta</option>
+                  <option value="car">Automóvil</option>
+                </select>
+              </div>
+            </div>
+
+            <div className={styles.row}>
+              <div className={styles.inputGroup}>
+                <label htmlFor="password" className={styles.label}>Contraseña</label>
+                <div className={styles.inputWrapper}>
+                  <Lock className={styles.inputIcon} size={18} />
+                  <input id="password" type="password" className={styles.input} placeholder="••••••••" onChange={handleChange} required />
+                </div>
+              </div>
+              <div className={styles.inputGroup}>
+                <label htmlFor="confirmPassword" className={styles.label}>Confirmar</label>
+                <div className={styles.inputWrapper}>
+                  <Lock className={styles.inputIcon} size={18} />
+                  <input id="confirmPassword" type="password" className={styles.input} placeholder="••••••••" onChange={handleChange} required />
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" className={styles.button} disabled={loading}>
+              {loading ? <Loader2 className="animate-spin" size={20} /> : <>Registrarme <ArrowRight size={18} /></>}
+            </button>
+          </form>
+
+          <p className={styles.footerText}>
+            ¿Ya tienes cuenta? <Link href="/login" className={styles.link}>Inicia sesión</Link>
+          </p>
+        </div>
+      </main>
     </div>
   );
 }
